@@ -1,3 +1,4 @@
+const { urlencoded } = require('express')
 let express = require('express')
 let socket = require('socket.io')
 
@@ -18,4 +19,11 @@ app.get('/', (res, req)=>{
 let io = socket(server)
 io.on('connection', (socket)=>{
     console.log(`socket connection connected and socket id is ${socket.id}`)
+    socket.on('chat', (data)=>{
+        io.sockets.emit('chat', data)
+    })
+
+    socket.on('typing', (username)=>{
+    socket.broadcast.emit('typing', username);
+    })
 })
